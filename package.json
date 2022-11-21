@@ -1,0 +1,19 @@
+{
+  "name": "express-cli",
+  "version": "1.0.0",
+  "description": "这是express的脚手架",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-jwt": "^7.7.7",
+    "jsonwebtoken": "^8.5.1"
+  }
+  
+}
