@@ -46,4 +46,11 @@ router.get("/afterlogin", checkToken, (req, res) => {
   });
 });
 
+router.get("/", (req, res) => {
+  res.send({
+    status: 200,
+    message: "2222",
+  });
+});
+
 module.exports = router;
