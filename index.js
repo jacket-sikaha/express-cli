@@ -1,21 +1,24 @@
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = 3001 || 8085;
 const loginRouter = require("./routes/login");
+const indexRouter = require("./routes/index");
 const { expressjwt: expressJWT } = require("express-jwt");
 const { checkToken, jwtKey } = require("./utils/authorization");
 // 两种检验/解析token方法 （二选一）
 // 1 utils/authorization里基于jwt包的检验方法
 // 2  expressJWT 注意该方法需要返回给服务端的token前缀词得是  Bearer
+// UnauthorizedError:Format is Authorization: Bearer [token] 否则就报错
 // 使用app.use()来注册中间件
 //  expressJWT({ secret: secretKey }) 就是用来解析Token的中间件
 //  .unless({ path: [/^\/api\//]}) 用来指定哪些接口不需要访问权限
 // app.use(expressJWT({ secret: jwtKey }).unless({ path: [/^\/api\//] }));
-app.use(
-  expressJWT({ secret: jwtKey, algorithms: ["HS256"] }).unless({
-    path: "/login",
-  })
-);
+
+// app.use(
+//   expressJWT({ secret: jwtKey, algorithms: ["HS256"] }).unless({
+//     path: "/login",
+//   })
+// );
 
 // 设置跨域
 const cors = require("cors");
@@ -30,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 const mwError = function (err, req, res, next) {
   //  token解析失败导致的错误
   if (err.name === "UnauthorizedError") {
+    // console.log("err", err);
     return res.send({ status: 401, message: "无效的token" });
   }
   // 其它原因导致的错误
@@ -38,6 +42,7 @@ const mwError = function (err, req, res, next) {
 };
 
 app.use(loginRouter);
+app.use(indexRouter);
 // console.log("loginRouter", loginRouter);
 
 app.get("/", (req, res) => res.send("Hello World!"));

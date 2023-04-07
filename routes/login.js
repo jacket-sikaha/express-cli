@@ -10,7 +10,7 @@ var router = express.Router();
 
 const database = {
   username: "sikara",
-  passwd: "1",
+  passwd: "sikara",
 };
 
 // 登陆生成jwt expiresIn token有效期
@@ -22,7 +22,7 @@ router.post("/login", (req, res) => {
     // 参数1:用户的信息对象
     // 参数2:加密的秘钥
     // 参数3:配置对象，可以配置当前token的有效期
-    jwt.sign({ username }, jwtKey, { expiresIn: "30s" }, (err, token) => {
+    jwt.sign({ username }, jwtKey, { expiresIn: "600s" }, (err, token) => {
       //   res.json({ username, message: "登陆成功", token });
       res.send({
         status: 200,
@@ -46,7 +46,7 @@ router.get("/afterlogin", checkToken, (req, res) => {
   });
 });
 
-router.get("/", (req, res) => {
+router.get("/asd", (req, res) => {
   res.send({
     status: 200,
     message: "2222",
