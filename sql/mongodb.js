@@ -4,9 +4,7 @@ const { MongoClient } = require("mongodb");
 
 dotenv.config();
 // 使用环境变量
-const uri =
-  // "mongodb+srv://qwe:qwe@cluster0.gejbp8p.mongodb.net/?retryWrites=true&w=majority";
-  `mongodb://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/?authMechanism=DEFAULT`;
+const uri = `mongodb://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/?authMechanism=DEFAULT`;
 
 async function getFileList() {
   const client = new MongoClient(uri);
