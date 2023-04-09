@@ -15,24 +15,23 @@ const database = {
 
 // 登陆生成jwt expiresIn token有效期
 router.post("/login", (req, res) => {
-  const { username, passwd } = req.body;
-  console.log(req.body);
-  if (username === database.username && passwd === database.passwd) {
+  const { username, password } = req.body;
+  // console.log(req.body);
+  if (username === database.username && password === database.passwd) {
     // TODO_03:在登录成功之后，调用jwt.sign()方法生成 JWT 字符串。并通过token属性发送给客户端
     // 参数1:用户的信息对象
     // 参数2:加密的秘钥
     // 参数3:配置对象，可以配置当前token的有效期
     jwt.sign({ username }, jwtKey, { expiresIn: "600s" }, (err, token) => {
       //   res.json({ username, message: "登陆成功", token });
-      res.send({
+      res.status(200).send({
         status: 200,
         message: "登陆成功",
         token,
       });
     });
   } else {
-    res.send({
-      status: 400,
+    res.status(400).send({
       message: "用户名或密码错误",
     });
   }

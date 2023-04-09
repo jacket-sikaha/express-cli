@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
   },
   //自定义上传文件的重命名
   filename: function (req, file, cb) {
-    // console.log(file);
     let { originalname } = file;
     // const encoding = jschardet.detect(originalname).encoding;
     // file.originalname = iconv.decode(Buffer.from(originalname), encoding);
@@ -25,25 +24,25 @@ const storage = multer.diskStorage({
 // jschardet.detect() 方法可以自动检测文件名字符串的编码格式，并返回相应的编码方式；
 // iconv.decode() 方法则将文件名字符串转换为指定编码方式的字符串，这里我们选择了 UTF-8 编码。
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 router.post("/upload", upload.array("files"), async function (req, res) {
   // console.log("req.files", req.files);
-  // console.log(decodeURIComponent(req.files[0].originalname));
+  if (!req.files) {
+    return res.status(500).json({ message: "Files Invalid" });
+  }
   await addFiles(req.files);
   res.status(200).json({ message: "successful" });
-
-  // res.render("index", { title: "Express" });
 });
 
-router.get("/allFiles", async function (req, res) {
+router.post("/allFiles", async function (req, res) {
   const data = (await getFileList()).map((obj) => ({
     id: obj._id,
     size: obj.size,
     filename: obj.filename,
     originalname: obj.originalname,
   }));
-  res.status(200).json({ data });
+  res.status(200).json(data);
   // res.render("index", { title: "Express" });
 });
 // 定义动态路由
